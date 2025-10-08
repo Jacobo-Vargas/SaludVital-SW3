@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitalApp - Tu Salud en un solo lugar</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <h1>VitalApp 🩺</h1>
+    <nav>
+        <a href="#agendar-cita">Agendar Cita</a>
+        <a href="#consultar-resultados">Resultados</a>
+        <a href="#alertas-salud">Alertas</a>
+    </nav>
+</header>
+
+<main class="container">
+
+    <section id="agendar-cita" class="card">
+        <h2>Agendar Nueva Cita</h2>
+        <form id="cita-form">
+            <div class="form-group">
+                <label for="especialidad">Especialidad Médica:</label>
+                <select id="especialidad" name="especialidad" required>
+                    <option value="">Seleccione una especialidad...</option>
+                    <option value="cardiologia">Cardiología</option>
+                    <option value="dermatologia">Dermatología</option>
+                    <option value="medicina-general">Medicina General</option>
+                    <option value="pediatria">Pediatría</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="fecha">Fecha Deseada:</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+            <div class="form-group">
+                <label for="hora">Hora:</label>
+                <input type="time" id="hora" name="hora" required>
+            </div>
+            <button type="submit" class="btn">Confirmar Cita</button>
+        </form>
+    </section>
+
+    <section id="consultar-resultados" class="card">
+        <h2>Mis Resultados Médicos</h2>
+        <div id="lista-resultados">
+            <div class="resultado-item">
+                <p><strong>Examen:</strong> Hemograma Completo</p>
+                <p><strong>Fecha:</strong> 05/10/2025</p>
+                <a href="#" class="btn-secondary">Ver Detalle</a>
+            </div>
+            <div class="resultado-item">
+                <p><strong>Examen:</strong> Perfil Lipídico</p>
+                <p><strong>Fecha:</strong> 28/09/2025</p>
+                <a href="#" class="btn-secondary">Ver Detalle</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="alertas-salud" class="card">
+        <h2>Alertas de Salud Personalizadas</h2>
+        <div id="lista-alertas">
+            <div class="alerta-item">
+                <p><strong>Recordatorio:</strong> Tomar medicamento "Anapril" a las 8:00 PM.</p>
+            </div>
+            <div class="alerta-item">
+                <p><strong>Próxima Cita:</strong> Tiene una cita con Cardiología el 15/10/2025 a las 10:00 AM.</p>
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2025 Salud Vital. Todos los derechos reservados.</p>
+</footer>
+
+<script src="scripts.js"></script>
+</body>
+</html>
