@@ -26,4 +26,4 @@ jobs:
       - name: Deploy SaludVital
         run: |
           cd back
-          railway up --service saludvital --detach
+          railway up --service SaludVital --detach
