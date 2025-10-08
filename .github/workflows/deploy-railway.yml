@@ -19,15 +19,11 @@ jobs:
         run: npm install -g @railway/cli
 
       
-      - name: Login to Railway
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-        run: railway login --token $RAILWAY_TOKEN
+      - name: Set RAILWAY_TOKEN
+        run: echo "RAILWAY_TOKEN=${{ secrets.RAILWAY_TOKEN }}" >> $GITHUB_ENV
 
       # despliegue
       - name: Deploy SaludVital
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
         run: |
           cd back  # si tu Dockerfile está en back/
           railway up --detach
