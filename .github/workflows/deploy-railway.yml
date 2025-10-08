@@ -25,5 +25,5 @@ jobs:
       # despliegue
       - name: Deploy SaludVital
         run: |
-          cd back  # si tu Dockerfile está en back/
-          railway up --detach
+          cd back
+          railway up --service saludvital --detach
