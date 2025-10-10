@@ -33,7 +33,9 @@ jobs:
 
       #  Compilar y ejecutar tests Java
       - name: Build and run tests
+        working-directory: back
         run: ./gradlew clean test --no-daemon
+
 
       #  Validar carpeta static
       - name: Validate static resources
