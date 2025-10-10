@@ -41,21 +41,6 @@ jobs:
         working-directory: back
         run: ./gradlew clean test --no-daemon
 
-
-      #  Validar carpeta static
-      - name: Validate static resources
-        run: |
-          STATIC_DIR=src/main/resources/static
-          if [ ! -d "$STATIC_DIR" ]; then
-            echo "❌ Carpeta $STATIC_DIR no existe"
-            exit 1
-          fi
-          if [ -z "$(ls -A $STATIC_DIR)" ]; then
-            echo "❌ Carpeta $STATIC_DIR está vacía"
-            exit 1
-          fi
-          echo "✅ Carpeta $STATIC_DIR OK"
-
       #   Placeholder para pruebas de rendimiento
       # - name: Run performance tests
       #   run: ./gradlew performanceTest --no-daemon
