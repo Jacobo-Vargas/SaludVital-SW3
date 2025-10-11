@@ -1,55 +1,66 @@
 package com.uniquindio.edu.back.service;
 
+import com.uniquindio.edu.back.mapper.CitaMapper;
+import com.uniquindio.edu.back.model.Cita;
+import com.uniquindio.edu.back.model.dto.CitaDTO;
+import com.uniquindio.edu.back.repository.CitaRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;  
-
-
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.concurrent.atomic.AtomicLong;
-
 import org.springframework.stereotype.Service;
 
-import com.uniquindio.edu.back.model.Cita;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CitaService {
-      private final Map<Long, Cita> citas = new LinkedHashMap<>();
-    private final AtomicLong idCounter = new AtomicLong(1);
+
+    private final CitaRepository citaRepository;
+    private final CitaMapper citaMapper;
 
     // Crear una nueva cita
-    public Cita crearCita(Cita cita) {
-        cita.setId(idCounter.getAndIncrement());
-        citas.put(cita.getId(), cita);
-        return cita;
+    public CitaDTO crearCita(CitaDTO dto) {
+        Cita cita = citaMapper.toEntity(dto);
+        Cita guardada = citaRepository.save(cita);
+        return citaMapper.toDTO(guardada);
     }
 
     // Listar todas las citas
-    public List<Cita> listarCitas() {
-        return new ArrayList<>(citas.values());
+    public List<CitaDTO> listarCitas() {
+        return citaRepository.findAll()
+                .stream()
+                .map(citaMapper::toDTO)
+                .collect(Collectors.toList());
     }
 
     // Buscar cita por id
-    public Optional<Cita> obtenerCita(Long id) {
-        return Optional.ofNullable(citas.get(id));
+    public Optional<CitaDTO> obtenerCita(Long id) {
+        return citaRepository.findById(id)
+                .map(citaMapper::toDTO);
     }
 
     // Actualizar una cita existente
-    public Optional<Cita> actualizarCita(Long id, Cita datos) {
-        if (!citas.containsKey(id)) return Optional.empty();
-        Cita cita = citas.get(id);
-        cita.setPaciente(datos.getPaciente());
-        cita.setEspecialidad(datos.getEspecialidad());
-        cita.setFechaHora(datos.getFechaHora());
-        cita.setMotivo(datos.getMotivo());
-        return Optional.of(cita);
+    public CitaDTO actualizarCita(Long id, CitaDTO dto) {
+        Cita cita = citaRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Cita no encontrada con id: " + id));
+
+        cita.setPaciente(dto.getPaciente());
+        cita.setEspecialidad(dto.getEspecialidad());
+        cita.setFechaHora(dto.getFechaHora());
+        cita.setMotivo(dto.getMotivo());
+
+        Cita actualizada = citaRepository.save(cita);
+        return citaMapper.toDTO(actualizada);
     }
 
     // Eliminar una cita
     public boolean eliminarCita(Long id) {
-        return citas.remove(id) != null;
+        if (!citaRepository.existsById(id)) {
+            return false;
+        }
+        citaRepository.deleteById(id);
+        return true;
     }
 }
