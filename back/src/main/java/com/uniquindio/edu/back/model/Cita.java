@@ -27,9 +27,7 @@ public class Cita implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idd;
-
-     private Long id;
+    private Long id;
 
     @NotBlank(message = "El nombre del paciente es obligatorio")
     private String paciente;

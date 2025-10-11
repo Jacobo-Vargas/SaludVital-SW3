@@ -2,6 +2,7 @@ package com.uniquindio.edu.back.controller;
 
 import java.net.URI;
 
+import com.uniquindio.edu.back.model.dto.CitaDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,28 +31,26 @@ public class CitaController {
     }
 
     @PostMapping
-    public ResponseEntity<Cita> crearCita(@Valid @RequestBody Cita cita) {
-        Cita nueva = citaService.crearCita(cita);
+    public ResponseEntity<CitaDTO> crearCita(@Valid @RequestBody CitaDTO cita) {
+        CitaDTO nueva = citaService.crearCita(cita);
         return ResponseEntity.created(URI.create("/api/citas/" + nueva.getId())).body(nueva);
     }
 
     @GetMapping
-    public List<Cita> listarCitas() {
+    public List<CitaDTO> listarCitas() {
         return citaService.listarCitas();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Cita> obtenerCita(@PathVariable Long id) {
+    public ResponseEntity<CitaDTO> obtenerCita(@PathVariable Long id) {
         return citaService.obtenerCita(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Cita> actualizarCita(@PathVariable Long id, @Valid @RequestBody Cita cita) {
-        return citaService.actualizarCita(id, cita)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<CitaDTO> actualizarCita(@PathVariable Long id, @Valid @RequestBody CitaDTO cita) {
+        return ResponseEntity.ok(citaService.actualizarCita(id, cita));
     }
 
     @DeleteMapping("/{id}")
