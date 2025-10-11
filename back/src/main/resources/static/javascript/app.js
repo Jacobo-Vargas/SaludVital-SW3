@@ -1,4 +1,4 @@
-const API = "http://localhost:8080/api/citas";
+const API = `${window.location.origin}/api/citas`;
 let todasLasCitas = [];
 
 document.addEventListener("DOMContentLoaded", () => {
