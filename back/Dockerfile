@@ -1,12 +1,25 @@
-# Etapa 1: Construcción
-FROM gradle:8.7-jdk21 AS build
+# ===============================
+# Etapa 1: Build con Gradle
+# ===============================
+FROM eclipse-temurin:21-jdk AS builder
 WORKDIR /app
-COPY back /app
-RUN gradle clean bootJar -x test --no-daemon
 
-# Etapa 2: Ejecución
+COPY build.gradle settings.gradle gradlew ./
+COPY gradle ./gradle
+COPY src ./src
+
+# Dar permiso de ejecución al gradle wrapper
+RUN chmod +x gradlew
+
+# Build del JAR (sin tests- previos en el runner)
+RUN ./gradlew clean build -x test
+
+# ===============================
+# Etapa 2: Runtime (solo el jar)
+# ===============================
 FROM eclipse-temurin:21-jre
 WORKDIR /app
-COPY --from=build /app/build/libs/*.jar app.jar
+COPY --from=builder /app/build/libs/*.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
