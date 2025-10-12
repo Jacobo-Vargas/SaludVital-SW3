@@ -1,9 +1,8 @@
 # Etapa 1: Construcción
 FROM gradle:8.7-jdk21 AS build
 WORKDIR /app
-COPY backend /app
-RUN ./gradlew --no-daemon --retry 3 clean build -x test
-
+COPY back /app
+RUN gradle clean build --no-daemon
 
 # Etapa 2: Ejecución
 FROM eclipse-temurin:21-jre

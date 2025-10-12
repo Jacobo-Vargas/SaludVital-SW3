@@ -1,25 +1,32 @@
 package com.uniquindio.edu.back;
 
-import com.uniquindio.edu.back.mapper.ResultadoMedicoMapper;
-import com.uniquindio.edu.back.model.ResultadoMedico;
-import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
-import com.uniquindio.edu.back.repository.ResultadoMedicoRepository;
-import com.uniquindio.edu.back.service.ResultadoMedicoService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import com.uniquindio.edu.back.mapper.ResultadoMedicoMapper;
+import com.uniquindio.edu.back.model.ResultadoMedico;
+import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
+import com.uniquindio.edu.back.repository.ResultadoMedicoRepository;
+import com.uniquindio.edu.back.service.ResultadoMedicoService;
 
 @ExtendWith(MockitoExtension.class)
 class ResultadoMedicoServiceTest {
@@ -145,9 +152,10 @@ class ResultadoMedicoServiceTest {
         when(resultadoMedicoRepository.findById(999L)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(RuntimeException.class, () -> {
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
             resultadoMedicoService.actualizarResultadoMedico(999L, resultadoMedicoDTO);
         });
+        assertNotNull(exception);
     }
 
     @Test
@@ -225,5 +233,17 @@ class ResultadoMedicoServiceTest {
         assertNotNull(resultado);
         assertEquals("REVISADO", resultado.getEstado());
         verify(resultadoMedicoRepository, times(1)).save(any(ResultadoMedico.class));
+    }
+
+    @Test
+    void cambiarEstado_ConIdInexistente_DeberiaLanzarExcepcion() {
+        // Arrange
+        when(resultadoMedicoRepository.findById(999L)).thenReturn(Optional.empty());
+
+        // Act & Assert
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+            resultadoMedicoService.cambiarEstado(999L, "REVISADO");
+        });
+        assertNotNull(exception);
     }
 }
