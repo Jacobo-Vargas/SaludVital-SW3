@@ -1,15 +1,17 @@
 package com.uniquindio.edu.back.loader;
 
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.time.LocalDateTime;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+
 import com.uniquindio.edu.back.model.Cita;
 import com.uniquindio.edu.back.model.ResultadoMedico;
 import com.uniquindio.edu.back.repository.CitaRepository;
 import com.uniquindio.edu.back.repository.ResultadoMedicoRepository;
 
-import java.time.LocalDateTime;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j

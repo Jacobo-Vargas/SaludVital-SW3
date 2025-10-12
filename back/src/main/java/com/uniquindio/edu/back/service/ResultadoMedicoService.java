@@ -1,17 +1,19 @@
 package com.uniquindio.edu.back.service;
 
-import com.uniquindio.edu.back.mapper.ResultadoMedicoMapper;
-import com.uniquindio.edu.back.model.ResultadoMedico;
-import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
-import com.uniquindio.edu.back.repository.ResultadoMedicoRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.uniquindio.edu.back.mapper.ResultadoMedicoMapper;
+import com.uniquindio.edu.back.model.ResultadoMedico;
+import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
+import com.uniquindio.edu.back.repository.ResultadoMedicoRepository;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @Slf4j
@@ -44,7 +46,6 @@ public class ResultadoMedicoService {
 
     // Listar todos los resultados médicos
     public List<ResultadoMedicoDTO> listarResultadosMedicos() {
-        log.info("Listando todos los resultados médicos");
         return resultadoMedicoRepository.findAll()
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
@@ -53,15 +54,12 @@ public class ResultadoMedicoService {
 
     // Buscar resultado médico por id
     public Optional<ResultadoMedicoDTO> obtenerResultadoMedico(Long id) {
-        log.info("Buscando resultado médico con ID: {}", id);
         return resultadoMedicoRepository.findById(id)
                 .map(resultadoMedicoMapper::toDTO);
     }
 
     // Actualizar un resultado médico existente
     public ResultadoMedicoDTO actualizarResultadoMedico(Long id, ResultadoMedicoDTO dto) {
-        log.info("Actualizando resultado médico con ID: {}", id);
-        
         ResultadoMedico resultado = resultadoMedicoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Resultado médico no encontrado con id: " + id));
 
@@ -75,27 +73,20 @@ public class ResultadoMedicoService {
         resultado.setEstado(dto.getEstado());
 
         ResultadoMedico actualizado = resultadoMedicoRepository.save(resultado);
-        log.info("Resultado médico actualizado exitosamente");
         return resultadoMedicoMapper.toDTO(actualizado);
     }
 
     // Eliminar un resultado médico
     public boolean eliminarResultadoMedico(Long id) {
-        log.info("Eliminando resultado médico con ID: {}", id);
-        
         if (!resultadoMedicoRepository.existsById(id)) {
-            log.warn("Resultado médico con ID {} no encontrado para eliminar", id);
             return false;
         }
-        
         resultadoMedicoRepository.deleteById(id);
-        log.info("Resultado médico eliminado exitosamente");
         return true;
     }
 
     // Buscar resultados por paciente
     public List<ResultadoMedicoDTO> buscarPorPaciente(String paciente) {
-        log.info("Buscando resultados médicos para paciente: {}", paciente);
         return resultadoMedicoRepository.findByPacienteContainingIgnoreCase(paciente)
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
@@ -104,7 +95,6 @@ public class ResultadoMedicoService {
 
     // Buscar resultados por tipo de examen
     public List<ResultadoMedicoDTO> buscarPorTipoExamen(String tipoExamen) {
-        log.info("Buscando resultados médicos por tipo de examen: {}", tipoExamen);
         return resultadoMedicoRepository.findByTipoExamenContainingIgnoreCase(tipoExamen)
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
@@ -113,7 +103,6 @@ public class ResultadoMedicoService {
 
     // Buscar resultados por médico responsable
     public List<ResultadoMedicoDTO> buscarPorMedicoResponsable(String medicoResponsable) {
-        log.info("Buscando resultados médicos por médico responsable: {}", medicoResponsable);
         return resultadoMedicoRepository.findByMedicoResponsableContainingIgnoreCase(medicoResponsable)
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
@@ -122,8 +111,15 @@ public class ResultadoMedicoService {
 
     // Buscar resultados por estado
     public List<ResultadoMedicoDTO> buscarPorEstado(String estado) {
-        log.info("Buscando resultados médicos por estado: {}", estado);
         return resultadoMedicoRepository.findByEstado(estado)
+                .stream()
+                .map(resultadoMedicoMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Buscar resultados por rango de fechas
+    public List<ResultadoMedicoDTO> buscarPorRangoFechas(LocalDateTime fechaInicio, LocalDateTime fechaFin) {
+        return resultadoMedicoRepository.findByFechaExamenBetween(fechaInicio, fechaFin)
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
                 .collect(Collectors.toList());
@@ -131,17 +127,14 @@ public class ResultadoMedicoService {
 
     // Buscar resultados pendientes
     public List<ResultadoMedicoDTO> buscarResultadosPendientes() {
-        log.info("Buscando resultados médicos pendientes");
         return resultadoMedicoRepository.findResultadosPendientes()
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    // Buscar resultados recientes (últimos 30 días)
-    public List<ResultadoMedicoDTO> buscarResultadosRecientes() {
-        log.info("Buscando resultados médicos recientes");
-        LocalDateTime fechaInicio = LocalDateTime.now().minusDays(30);
+    // Buscar resultados recientes
+    public List<ResultadoMedicoDTO> buscarResultadosRecientes(LocalDateTime fechaInicio) {
         return resultadoMedicoRepository.findResultadosRecientes(fechaInicio)
                 .stream()
                 .map(resultadoMedicoMapper::toDTO)
@@ -150,15 +143,13 @@ public class ResultadoMedicoService {
 
     // Cambiar estado de un resultado médico
     public ResultadoMedicoDTO cambiarEstado(Long id, String nuevoEstado) {
-        log.info("Cambiando estado del resultado médico ID {} a: {}", id, nuevoEstado);
-        
         ResultadoMedico resultado = resultadoMedicoRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Resultado médico no encontrado con id: " + id));
 
         resultado.setEstado(nuevoEstado);
         ResultadoMedico actualizado = resultadoMedicoRepository.save(resultado);
         
-        log.info("Estado actualizado exitosamente");
+        log.info("Estado del resultado médico {} cambiado a: {}", id, nuevoEstado);
         return resultadoMedicoMapper.toDTO(actualizado);
     }
 }

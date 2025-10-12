@@ -1,7 +1,7 @@
 # Etapa 1: Construcción
 FROM gradle:8.7-jdk21 AS build
 WORKDIR /app
-COPY backend /app
+COPY back /app
 RUN gradle bootJar --no-daemon
 
 # Etapa 2: Ejecución

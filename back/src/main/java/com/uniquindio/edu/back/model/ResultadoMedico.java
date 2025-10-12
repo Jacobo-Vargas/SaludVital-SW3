@@ -1,18 +1,18 @@
 package com.uniquindio.edu.back.model;
 
+import java.io.Serial;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.PastOrPresent;
-
-import java.io.Serial;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.Data;
 
 @Data
 @Entity
@@ -64,32 +64,4 @@ public class ResultadoMedico implements Serializable {
         this.observaciones = observaciones;
         this.estado = estado;
     }
-
-    // Getters y setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getPaciente() { return paciente; }
-    public void setPaciente(String paciente) { this.paciente = paciente; }
-
-    public String getTipoExamen() { return tipoExamen; }
-    public void setTipoExamen(String tipoExamen) { this.tipoExamen = tipoExamen; }
-
-    public String getResultados() { return resultados; }
-    public void setResultados(String resultados) { this.resultados = resultados; }
-
-    public String getMedicoResponsable() { return medicoResponsable; }
-    public void setMedicoResponsable(String medicoResponsable) { this.medicoResponsable = medicoResponsable; }
-
-    public LocalDateTime getFechaExamen() { return fechaExamen; }
-    public void setFechaExamen(LocalDateTime fechaExamen) { this.fechaExamen = fechaExamen; }
-
-    public LocalDateTime getFechaEmision() { return fechaEmision; }
-    public void setFechaEmision(LocalDateTime fechaEmision) { this.fechaEmision = fechaEmision; }
-
-    public String getObservaciones() { return observaciones; }
-    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
-
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
 }

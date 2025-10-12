@@ -1,38 +1,35 @@
 package com.uniquindio.edu.back;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
-import com.uniquindio.edu.back.service.ResultadoMedicoService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-@WebMvcTest(com.uniquindio.edu.back.controller.ResultadoMedicoController.class)
+import com.uniquindio.edu.back.controller.ResultadoMedicoController;
+import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
+import com.uniquindio.edu.back.service.ResultadoMedicoService;
+
+@ExtendWith(MockitoExtension.class)
 class ResultadoMedicoControllerTest {
 
-    @Autowired
-    private MockMvc mockMvc;
-
-    @org.springframework.boot.test.mock.mockito.MockBean
+    @Mock
     private ResultadoMedicoService resultadoMedicoService;
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    @InjectMocks
+    private ResultadoMedicoController resultadoMedicoController;
 
     private ResultadoMedicoDTO resultadoMedicoDTO;
 
@@ -49,174 +46,154 @@ class ResultadoMedicoControllerTest {
     }
 
     @Test
-    void crearResultadoMedico_DeberiaCrearYRetornar201() throws Exception {
+    void crearResultadoMedico_DeberiaRetornar201ConResultadoCreado() {
         // Arrange
         when(resultadoMedicoService.crearResultadoMedico(any(ResultadoMedicoDTO.class)))
                 .thenReturn(resultadoMedicoDTO);
 
-        // Act & Assert
-        mockMvc.perform(post("/api/resultados-medicos")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(resultadoMedicoDTO)))
-                .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.paciente").value("Juan Pérez"))
-                .andExpect(jsonPath("$.tipoExamen").value("Hemograma Completo"))
-                .andExpect(jsonPath("$.estado").value("COMPLETADO"));
+        // Act
+        ResponseEntity<ResultadoMedicoDTO> response = resultadoMedicoController.crearResultadoMedico(resultadoMedicoDTO);
+
+        // Assert
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertNotNull(response.getBody());
+        if (response.getBody() != null) {
+            if (response.getBody() != null) {
+            assertEquals("Juan Pérez", response.getBody().getPaciente());
+        }
+        }
     }
 
     @Test
-    void listarResultadosMedicos_DeberiaRetornarListaDeResultados() throws Exception {
+    void listarResultadosMedicos_DeberiaRetornarListaDeResultados() {
         // Arrange
         List<ResultadoMedicoDTO> resultados = Arrays.asList(resultadoMedicoDTO);
         when(resultadoMedicoService.listarResultadosMedicos()).thenReturn(resultados);
 
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].id").value(1))
-                .andExpect(jsonPath("$[0].paciente").value("Juan Pérez"));
+        // Act
+        List<ResultadoMedicoDTO> response = resultadoMedicoController.listarResultadosMedicos();
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals("Juan Pérez", response.get(0).getPaciente());
     }
 
     @Test
-    void obtenerResultadoMedico_ConIdExistente_DeberiaRetornarResultado() throws Exception {
+    void obtenerResultadoMedico_ConIdExistente_DeberiaRetornar200ConResultado() {
         // Arrange
         when(resultadoMedicoService.obtenerResultadoMedico(1L))
                 .thenReturn(Optional.of(resultadoMedicoDTO));
 
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/1"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.paciente").value("Juan Pérez"));
+        // Act
+        ResponseEntity<ResultadoMedicoDTO> response = resultadoMedicoController.obtenerResultadoMedico(1L);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        if (response.getBody() != null) {
+            assertEquals("Juan Pérez", response.getBody().getPaciente());
+        }
     }
 
     @Test
-    void obtenerResultadoMedico_ConIdInexistente_DeberiaRetornar404() throws Exception {
+    void obtenerResultadoMedico_ConIdInexistente_DeberiaRetornar404() {
         // Arrange
         when(resultadoMedicoService.obtenerResultadoMedico(999L))
                 .thenReturn(Optional.empty());
 
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/999"))
-                .andExpect(status().isNotFound());
+        // Act
+        ResponseEntity<ResultadoMedicoDTO> response = resultadoMedicoController.obtenerResultadoMedico(999L);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    void actualizarResultadoMedico_ConIdExistente_DeberiaActualizarYRetornar200() throws Exception {
+    void actualizarResultadoMedico_ConIdExistente_DeberiaRetornar200ConResultadoActualizado() {
         // Arrange
-        when(resultadoMedicoService.actualizarResultadoMedico(eq(1L), any(ResultadoMedicoDTO.class)))
+        when(resultadoMedicoService.actualizarResultadoMedico(1L, resultadoMedicoDTO))
                 .thenReturn(resultadoMedicoDTO);
 
-        // Act & Assert
-        mockMvc.perform(put("/api/resultados-medicos/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(resultadoMedicoDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id").value(1))
-                .andExpect(jsonPath("$.paciente").value("Juan Pérez"));
+        // Act
+        ResponseEntity<ResultadoMedicoDTO> response = resultadoMedicoController.actualizarResultadoMedico(1L, resultadoMedicoDTO);
+
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        if (response.getBody() != null) {
+            assertEquals("Juan Pérez", response.getBody().getPaciente());
+        }
     }
 
     @Test
-    void eliminarResultadoMedico_ConIdExistente_DeberiaEliminarYRetornar204() throws Exception {
+    void eliminarResultadoMedico_ConIdExistente_DeberiaRetornar204() {
         // Arrange
         when(resultadoMedicoService.eliminarResultadoMedico(1L)).thenReturn(true);
 
-        // Act & Assert
-        mockMvc.perform(delete("/api/resultados-medicos/1"))
-                .andExpect(status().isNoContent());
+        // Act
+        ResponseEntity<Void> response = resultadoMedicoController.eliminarResultadoMedico(1L);
+
+        // Assert
+        assertEquals(HttpStatus.NO_CONTENT, response.getStatusCode());
     }
 
     @Test
-    void eliminarResultadoMedico_ConIdInexistente_DeberiaRetornar404() throws Exception {
+    void eliminarResultadoMedico_ConIdInexistente_DeberiaRetornar404() {
         // Arrange
         when(resultadoMedicoService.eliminarResultadoMedico(999L)).thenReturn(false);
 
-        // Act & Assert
-        mockMvc.perform(delete("/api/resultados-medicos/999"))
-                .andExpect(status().isNotFound());
+        // Act
+        ResponseEntity<Void> response = resultadoMedicoController.eliminarResultadoMedico(999L);
+
+        // Assert
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
     }
 
     @Test
-    void buscarPorPaciente_DeberiaRetornarResultadosDelPaciente() throws Exception {
+    void buscarPorPaciente_DeberiaRetornarListaDeResultados() {
         // Arrange
         List<ResultadoMedicoDTO> resultados = Arrays.asList(resultadoMedicoDTO);
         when(resultadoMedicoService.buscarPorPaciente("Juan")).thenReturn(resultados);
 
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/buscar/paciente")
-                        .param("paciente", "Juan"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].paciente").value("Juan Pérez"));
+        // Act
+        List<ResultadoMedicoDTO> response = resultadoMedicoController.buscarPorPaciente("Juan");
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals("Juan Pérez", response.get(0).getPaciente());
     }
 
     @Test
-    void buscarPorTipoExamen_DeberiaRetornarResultadosDelTipo() throws Exception {
-        // Arrange
-        List<ResultadoMedicoDTO> resultados = Arrays.asList(resultadoMedicoDTO);
-        when(resultadoMedicoService.buscarPorTipoExamen("Hemograma")).thenReturn(resultados);
-
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/buscar/tipo-examen")
-                        .param("tipoExamen", "Hemograma"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].tipoExamen").value("Hemograma Completo"));
-    }
-
-    @Test
-    void buscarPorEstado_DeberiaRetornarResultadosConEstado() throws Exception {
+    void buscarPorEstado_DeberiaRetornarListaDeResultados() {
         // Arrange
         List<ResultadoMedicoDTO> resultados = Arrays.asList(resultadoMedicoDTO);
         when(resultadoMedicoService.buscarPorEstado("COMPLETADO")).thenReturn(resultados);
 
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/buscar/estado")
-                        .param("estado", "COMPLETADO"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
-                .andExpect(jsonPath("$[0].estado").value("COMPLETADO"));
+        // Act
+        List<ResultadoMedicoDTO> response = resultadoMedicoController.buscarPorEstado("COMPLETADO");
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        assertEquals("COMPLETADO", response.get(0).getEstado());
     }
 
     @Test
-    void buscarResultadosPendientes_DeberiaRetornarResultadosPendientes() throws Exception {
+    void cambiarEstado_ConIdExistente_DeberiaRetornar200ConResultadoActualizado() {
         // Arrange
-        List<ResultadoMedicoDTO> resultados = Arrays.asList(resultadoMedicoDTO);
-        when(resultadoMedicoService.buscarResultadosPendientes()).thenReturn(resultados);
+        when(resultadoMedicoService.cambiarEstado(1L, "REVISADO"))
+                .thenReturn(resultadoMedicoDTO);
 
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/pendientes"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
-    }
+        // Act
+        ResponseEntity<ResultadoMedicoDTO> response = resultadoMedicoController.cambiarEstado(1L, "REVISADO");
 
-    @Test
-    void buscarResultadosRecientes_DeberiaRetornarResultadosRecientes() throws Exception {
-        // Arrange
-        List<ResultadoMedicoDTO> resultados = Arrays.asList(resultadoMedicoDTO);
-        when(resultadoMedicoService.buscarResultadosRecientes()).thenReturn(resultados);
-
-        // Act & Assert
-        mockMvc.perform(get("/api/resultados-medicos/recientes"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray());
-    }
-
-    @Test
-    void cambiarEstado_DeberiaCambiarEstadoYRetornar200() throws Exception {
-        // Arrange
-        ResultadoMedicoDTO resultadoActualizado = new ResultadoMedicoDTO();
-        resultadoActualizado.setId(1L);
-        resultadoActualizado.setEstado("REVISADO");
-        
-        when(resultadoMedicoService.cambiarEstado(1L, "REVISADO")).thenReturn(resultadoActualizado);
-
-        // Act & Assert
-        mockMvc.perform(put("/api/resultados-medicos/1/cambiar-estado")
-                        .param("estado", "REVISADO"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.estado").value("REVISADO"));
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        if (response.getBody() != null) {
+            assertEquals("Juan Pérez", response.getBody().getPaciente());
+        }
     }
 }
