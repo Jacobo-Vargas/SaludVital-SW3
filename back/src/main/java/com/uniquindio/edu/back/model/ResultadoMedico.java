@@ -46,6 +46,8 @@ public class ResultadoMedico implements Serializable {
     @PastOrPresent(message = "La fecha de emisión no puede ser futura")
     private LocalDateTime fechaEmision;
 
+    private String descripcion;
+
     private String observaciones;
     private String estado; // PENDIENTE, COMPLETADO, REVISADO
 
