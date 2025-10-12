@@ -1,6 +1,5 @@
 package com.uniquindio.edu.back.repository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -40,13 +39,20 @@ public interface ResultadoMedicoRepository extends JpaRepository<ResultadoMedico
     // Buscar resultados recientes (últimos 30 días)
     @Query("SELECT r FROM ResultadoMedico r WHERE r.fechaEmision >= :fechaInicio ORDER BY r.fechaEmision DESC")
     List<ResultadoMedico> findResultadosRecientes(@Param("fechaInicio") LocalDateTime fechaInicio);
-
-    @Query("SELECT r FROM ResultadoMedico r WHERE (:texto IS NULL OR r.descripcion LIKE %:texto%)")
-List<ResultadoMedico> buscarPorTexto(@Param("texto") String texto); 
-
-@Query("SELECT r FROM ResultadoMedico r WHERE r.fechaExamen BETWEEN :fechaInicio AND :fechaFin ORDER BY r.fechaExamen DESC")
-List<ResultadoMedico> findByFechaExamenBetween(
-    @Param("fechaInicio") LocalDate fechaInicio, 
-    @Param("fechaFin") LocalDate fechaFin
-);
+ // COMENTA TEMPORALMENTE ESTAS QUERIES SI DAN ERROR
+    /*
+    @Query("SELECT r FROM ResultadoMedico r WHERE r.fechaExamen BETWEEN :fechaInicio AND :fechaFin ORDER BY r.fechaExamen DESC")
+    List<ResultadoMedico> findByFechaExamenBetween(
+        @Param("fechaInicio") LocalDateTime fechaInicio, 
+        @Param("fechaFin") LocalDateTime fechaFin
+    );
+    
+    @Query("SELECT r FROM ResultadoMedico r WHERE r.estado = 'PENDIENTE' ORDER BY r.fechaEmision DESC")
+    List<ResultadoMedico> findResultadosPendientes();
+    
+    @Query("SELECT r FROM ResultadoMedico r WHERE r.fechaEmision >= :fechaInicio ORDER BY r.fechaEmision DESC")
+    List<ResultadoMedico> findResultadosRecientes(@Param("fechaInicio") LocalDateTime fechaInicio);
+    */
+     // Reemplázalas temporalmente con estas versiones simples
+ 
 }
