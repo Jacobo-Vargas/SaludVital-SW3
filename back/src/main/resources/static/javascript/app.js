@@ -1,4 +1,5 @@
-const API = `${window.location.origin}/api/citas`;
+const APICITAS = `${window.location.origin}/api/citas`;
+const APIRESULTADO = `${window.location.origin}/api/resultados-medicos`;
 let todasLasCitas = [];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,7 +18,7 @@ function mostrarSeccion(id) {
 }
 
 async function listarCitas() {
-  const res = await fetch(API);
+  const res = await fetch(APICITAS);
   todasLasCitas = await res.json();
   renderizarCitas(todasLasCitas);
 }
@@ -64,9 +65,9 @@ async function guardarCita(e) {
   const cita = { paciente, especialidad, fechaHora, motivo };
 
   if (id) {
-    await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
+    await fetch(`${APICITAS}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
   } else {
-    await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
+    await fetch(APICITAS, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
   }
 
   limpiarFormulario();
@@ -75,7 +76,7 @@ async function guardarCita(e) {
 }
 
 async function editarCita(id) {
-  const res = await fetch(`${API}/${id}`);
+  const res = await fetch(`${APICITAS}/${id}`);
   const cita = await res.json();
 
   document.getElementById("id").value = cita.id;
@@ -89,7 +90,7 @@ async function editarCita(id) {
 
 async function eliminarCita(id) {
   if (confirm("¿Eliminar esta cita?")) {
-    await fetch(`${API}/${id}`, { method: "DELETE" });
+    await fetch(`${APICITAS}/${id}`, { method: "DELETE" });
     listarCitas();
   }
 }
@@ -111,4 +112,12 @@ function filtrarCitas() {
   );
 
   renderizarCitas(filtradas);
+}
+
+
+async function registrarResultado(resultado) {
+  console.log("Este es el reusltado",resultado);
+  await fetch(APIRESULTADO, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(resultado) });
+  document.getElementById("id").value = "";
+  document.getElementById("resultadosForm").reset();
 }

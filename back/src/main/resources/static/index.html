@@ -17,6 +17,7 @@
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="mostrarSeccion('panel')">🏠 Panel</button>
       <button class="nav-item" onclick="mostrarSeccion('formulario')">🩺 Nueva Cita</button>
+      <button class="nav-item" onclick="mostrarSeccion('resultados')">✌️ Resultados</button>
     </nav>
   </aside>
 
@@ -41,6 +42,31 @@
         <h2>🩺 Citas Agendadas</h2>
         <div id="citasContainer" class="citas-grid"></div>
       </section>
+
+
+      <section id="resultados" class="form-section hidden">
+        <h2>Resultados</h2>
+
+        <form id="resultadosForm">
+          <input type="hidden" id="id1">
+          <label>Paciente
+            <input id="nombrepaciente" type="text" placeholder="Nombre completo" required>
+          </label>
+          <label>Especialidad
+            <input id="nombreespecialidad" type="text" placeholder="Ej: Cardiología" required>
+          </label>
+          <label>Motivo
+            <textarea id="nombremotivo" rows="3" placeholder="Motivo de la consulta..."></textarea>
+          </label>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary" onclick="registrarResultado()">Guardar</button>
+            <button type="button" class="btn-secondary" onclick="limpiarFormulario()">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+
 
       <!-- FORMULARIO DE CITAS -->
       <section id="formulario" class="form-section hidden">
