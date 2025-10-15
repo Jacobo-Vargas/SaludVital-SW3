@@ -1,11 +1,12 @@
 package com.uniquindio.edu.back.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import com.uniquindio.edu.back.model.ResultadoMedico;
 import com.uniquindio.edu.back.model.dto.ResultadoMedicoDTO;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ResultadoMedicoMapper {
 
     ResultadoMedicoDTO toDTO(ResultadoMedico resultadoMedico);

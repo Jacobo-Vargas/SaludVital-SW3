@@ -41,7 +41,7 @@ class ResultadoMedicoControllerTest {
         resultadoMedicoDTO = new ResultadoMedicoDTO(
                 1L, "Juan Pérez", "Hemograma Completo", 
                 "Hemoglobina: 14.2 g/dL (Normal)", 
-                "Dr. María González", fechaExamen, fechaEmision, 
+                "Dr. María González", fechaExamen, fechaEmision,"descripción resultados",
                 "Resultados normales", "COMPLETADO");
     }
 

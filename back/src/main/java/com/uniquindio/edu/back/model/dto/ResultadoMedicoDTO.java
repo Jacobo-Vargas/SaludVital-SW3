@@ -28,18 +28,18 @@ public class ResultadoMedicoDTO {
     @PastOrPresent(message = "La fecha del examen no puede ser futura")
     private LocalDateTime fechaExamen;
 
-    @NotNull(message = "La fecha de emisión es obligatoria")
-    @PastOrPresent(message = "La fecha de emisión no puede ser futura")
     private LocalDateTime fechaEmision;
 
+    private String descripcion;
     private String observaciones;
-    private String estado; // PENDIENTE, COMPLETADO, REVISADO
+    private String estado;
 
     public ResultadoMedicoDTO() {}
 
-    public ResultadoMedicoDTO(Long id, String paciente, String tipoExamen, String resultados, 
-                             String medicoResponsable, LocalDateTime fechaExamen, 
-                             LocalDateTime fechaEmision, String observaciones, String estado) {
+    public ResultadoMedicoDTO(Long id, String paciente, String tipoExamen, String resultados,
+                              String medicoResponsable, LocalDateTime fechaExamen,
+                              LocalDateTime fechaEmision, String descripcion,
+                              String observaciones, String estado) {
         this.id = id;
         this.paciente = paciente;
         this.tipoExamen = tipoExamen;
@@ -47,6 +47,7 @@ public class ResultadoMedicoDTO {
         this.medicoResponsable = medicoResponsable;
         this.fechaExamen = fechaExamen;
         this.fechaEmision = fechaEmision;
+        this.descripcion = descripcion;
         this.observaciones = observaciones;
         this.estado = estado;
     }
