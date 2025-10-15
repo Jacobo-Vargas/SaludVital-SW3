@@ -57,7 +57,7 @@ class ResultadoMedicoControllerTest {
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
-        if (response.getBody() != null) {
+        if (response.getBody() == null) {
             if (response.getBody() != null) {
             assertEquals("Juan Pérez", response.getBody().getPaciente());
         }

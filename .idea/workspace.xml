@@ -4,15 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="236172fc-1547-4196-8702-4f1007b10575" name="Changes" comment="">
+    <list default="true" id="236172fc-1547-4196-8702-4f1007b10575" name="Changes" comment="Se agrego el CRUD de los resultados medicos y se modificaron las pruebas del Service y Controller">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/controller/ResultadoMedicoController.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/controller/ResultadoMedicoController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/mapper/ResultadoMedicoMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/mapper/ResultadoMedicoMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/model/ResultadoMedico.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/model/ResultadoMedico.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/model/dto/ResultadoMedicoDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/model/dto/ResultadoMedicoDTO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/service/ResultadoMedicoService.java" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/java/com/uniquindio/edu/back/service/ResultadoMedicoService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/resources/static/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/resources/static/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/back/src/main/resources/static/javascript/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/back/src/main/resources/static/javascript/app.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,33 +74,34 @@
     <option name="showScratchesAndConsoles" value="false" />
     <option name="showVisibilityIcons" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Gradle.Build back.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.ResultadoMedicoServiceTest.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.saludVital [bootJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.saludVital [bootRun].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.saludVital [clean].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BackApplication.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;develop&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Jacobo Vargas/Documents/U/saludVital/back/src/main/java/com/uniquindio/edu/back&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Gradle.Build back.executor": "Run",
+    "Gradle.ResultadoMedicoControllerTest.executor": "Run",
+    "Gradle.ResultadoMedicoServiceTest.executor": "Run",
+    "Gradle.saludVital [bootJar].executor": "Run",
+    "Gradle.saludVital [bootRun].executor": "Run",
+    "Gradle.saludVital [clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.BackApplication.executor": "Run",
+    "git-widget-placeholder": "develop",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/Jacobo Vargas/Documents/U/saludVital/back/src/main/java/com/uniquindio/edu/back",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Jacobo Vargas\Documents\U\saludVital\back\src\main\java\com\uniquindio\edu\back" />
@@ -377,11 +371,24 @@
       <workItem from="1759903810616" duration="130000" />
       <workItem from="1759904007372" duration="145000" />
       <workItem from="1760380218074" duration="9711000" />
-      <workItem from="1760529757587" duration="346000" />
+      <workItem from="1760529757587" duration="683000" />
     </task>
+    <task id="LOCAL-00001" summary="Se agrego el CRUD de los resultados medicos y se modificaron las pruebas del Service y Controller">
+      <option name="closed" value="true" />
+      <created>1760530365303</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1760530365303</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Se agrego el CRUD de los resultados medicos y se modificaron las pruebas del Service y Controller" />
+    <option name="LAST_COMMIT_MESSAGE" value="Se agrego el CRUD de los resultados medicos y se modificaron las pruebas del Service y Controller" />
   </component>
 </project>
