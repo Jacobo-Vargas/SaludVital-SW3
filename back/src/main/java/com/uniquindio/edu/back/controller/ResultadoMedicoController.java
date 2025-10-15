@@ -54,7 +54,7 @@ public class ResultadoMedicoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ResultadoMedicoDTO> actualizarResultadoMedico(@PathVariable Long id, 
+    public ResponseEntity<ResultadoMedicoDTO> actualizarResultadoMedico(@PathVariable Long id,
                                                                         @Valid @RequestBody ResultadoMedicoDTO resultadoMedico) {
         log.info("Actualizando resultado médico con ID: {}", id);
         try {
@@ -98,7 +98,7 @@ public class ResultadoMedicoController {
     }
 
     @GetMapping("/buscar/fechas")
-    public List<ResultadoMedicoDTO> buscarPorRangoFechas(@RequestParam LocalDateTime fechaInicio, 
+    public List<ResultadoMedicoDTO> buscarPorRangoFechas(@RequestParam LocalDateTime fechaInicio,
                                                          @RequestParam LocalDateTime fechaFin) {
         log.info("Buscando resultados médicos entre fechas: {} y {}", fechaInicio, fechaFin);
         return resultadoMedicoService.buscarPorRangoFechas(fechaInicio, fechaFin);
@@ -117,8 +117,8 @@ public class ResultadoMedicoController {
     }
 
     @PutMapping("/{id}/cambiar-estado")
-    public ResponseEntity<ResultadoMedicoDTO> cambiarEstado(@PathVariable Long id, 
-                                                           @RequestParam String estado) {
+    public ResponseEntity<ResultadoMedicoDTO> cambiarEstado(@PathVariable Long id,
+                                                            @RequestParam String estado) {
         log.info("Cambiando estado del resultado médico {} a: {}", id, estado);
         try {
             ResultadoMedicoDTO actualizado = resultadoMedicoService.cambiarEstado(id, estado);

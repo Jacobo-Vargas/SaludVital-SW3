@@ -1,4 +1,5 @@
-const API = `${window.location.origin}/api/citas`;
+const APICITAS = `${window.location.origin}/api/citas`;
+const APIRESULTADO = `${window.location.origin}/api/resultados-medicos`;
 let todasLasCitas = [];
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -17,7 +18,7 @@ function mostrarSeccion(id) {
 }
 
 async function listarCitas() {
-  const res = await fetch(API);
+  const res = await fetch(APICITAS);
   todasLasCitas = await res.json();
   renderizarCitas(todasLasCitas);
 }
@@ -64,9 +65,9 @@ async function guardarCita(e) {
   const cita = { paciente, especialidad, fechaHora, motivo };
 
   if (id) {
-    await fetch(`${API}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
+    await fetch(`${APICITAS}/${id}`, { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
   } else {
-    await fetch(API, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
+    await fetch(APICITAS, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(cita) });
   }
 
   limpiarFormulario();
@@ -75,7 +76,7 @@ async function guardarCita(e) {
 }
 
 async function editarCita(id) {
-  const res = await fetch(`${API}/${id}`);
+  const res = await fetch(`${APICITAS}/${id}`);
   const cita = await res.json();
 
   document.getElementById("id").value = cita.id;
@@ -89,7 +90,7 @@ async function editarCita(id) {
 
 async function eliminarCita(id) {
   if (confirm("¿Eliminar esta cita?")) {
-    await fetch(`${API}/${id}`, { method: "DELETE" });
+    await fetch(`${APICITAS}/${id}`, { method: "DELETE" });
     listarCitas();
   }
 }
@@ -112,3 +113,125 @@ function filtrarCitas() {
 
   renderizarCitas(filtradas);
 }
+
+
+async function registrarResultado(resultado) {
+  console.log("Este es el reusltado",resultado);
+  await fetch(APIRESULTADO, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(resultado) });
+  document.getElementById("id").value = "";
+  document.getElementById("resultadosForm").reset();
+}
+
+
+/* ==========================
+   CRUD RESULTADOS MÉDICOS
+========================== */
+
+document.addEventListener("DOMContentLoaded", () => {
+  listarResultados();
+  document.getElementById("resultadosForm").addEventListener("submit", guardarResultado);
+});
+
+async function listarResultados() {
+  const res = await fetch(APIRESULTADO);
+  const resultados = await res.json();
+  renderizarResultados(resultados);
+}
+
+function renderizarResultados(resultados) {
+  const cont = document.getElementById("resultadosContainer");
+  cont.innerHTML = "";
+
+  if (resultados.length === 0) {
+    cont.innerHTML = `<p style="color:gray;text-align:center;">No hay resultados registrados.</p>`;
+    return;
+  }
+
+  resultados.forEach(r => {
+    const card = document.createElement("div");
+    card.classList.add("cita-card");
+    card.innerHTML = `
+      <div class="cita-header">
+        <h3>${r.paciente}</h3>
+        <small>${r.tipoExamen}</small>
+      </div>
+      <div class="cita-info">
+        <p><b>Fecha examen:</b> ${r.fechaExamen ? r.fechaExamen.replace("T", " ") : "N/A"}</p>
+        <p><b>Médico:</b> ${r.medicoResponsable}</p>
+        <p><b>Estado:</b> ${r.estado}</p>
+        <p><b>Resultados:</b> ${r.resultados || "Sin detalles"}</p>
+      </div>
+      <div class="cita-actions">
+        <button class="btn-icon" onclick="editarResultado(${r.id})">✏️</button>
+        <button class="btn-icon" onclick="eliminarResultado(${r.id})">🗑️</button>
+      </div>
+    `;
+    cont.appendChild(card);
+  });
+}
+
+async function guardarResultado(e) {
+  e.preventDefault();
+
+  const id = document.getElementById("resultadoId").value;
+  const dto = {
+    paciente: document.getElementById("resultadoPaciente").value,
+    tipoExamen: document.getElementById("resultadoTipoExamen").value,
+    resultados: document.getElementById("resultadoTexto").value,
+    medicoResponsable: document.getElementById("resultadoMedico").value,
+    fechaExamen: document.getElementById("resultadoFechaExamen").value,
+    observaciones: document.getElementById("resultadoObservaciones").value,
+    estado: document.getElementById("resultadoEstado").value,
+    fechaEmision: new Date().toISOString()
+  };
+
+  const opciones = {
+    method: id ? "PUT" : "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dto)
+  };
+
+  const url = id ? `${APIRESULTADO}/${id}` : APIRESULTADO;
+  const res = await fetch(url, opciones);
+
+  if (res.ok) {
+    limpiarFormularioResultado();
+    listarResultados();
+  } else {
+    console.error("Error al guardar resultado:", res.status);
+    alert(" Error al guardar el resultado. Ver consola para detalles.");
+  }
+}
+
+
+
+async function editarResultado(id) {
+  const res = await fetch(`${APIRESULTADO}/${id}`);
+  const r = await res.json();
+
+  document.getElementById("resultadoId").value = r.id;
+  document.getElementById("resultadoPaciente").value = r.paciente;
+  document.getElementById("resultadoTipoExamen").value = r.tipoExamen;
+  document.getElementById("resultadoTexto").value = r.resultados;
+  document.getElementById("resultadoMedico").value = r.medicoResponsable;
+  document.getElementById("resultadoFechaExamen").value = r.fechaExamen ? r.fechaExamen.substring(0, 16) : "";
+  document.getElementById("resultadoObservaciones").value = r.observaciones;
+  document.getElementById("resultadoEstado").value = r.estado || "PENDIENTE";
+
+
+  document.getElementById("resultadosForm").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+
+async function eliminarResultado(id) {
+  if (confirm("¿Eliminar este resultado médico?")) {
+    await fetch(`${APIRESULTADO}/${id}`, { method: "DELETE" });
+    listarResultados();
+  }
+}
+
+function limpiarFormularioResultado() {
+  document.getElementById("resultadoId").value = "";
+  document.getElementById("resultadosForm").reset();
+}
+

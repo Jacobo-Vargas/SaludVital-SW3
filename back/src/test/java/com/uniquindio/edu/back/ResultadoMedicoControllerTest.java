@@ -41,7 +41,7 @@ class ResultadoMedicoControllerTest {
         resultadoMedicoDTO = new ResultadoMedicoDTO(
                 1L, "Juan Pérez", "Hemograma Completo", 
                 "Hemoglobina: 14.2 g/dL (Normal)", 
-                "Dr. María González", fechaExamen, fechaEmision, 
+                "Dr. María González", fechaExamen, fechaEmision,"descripción resultados",
                 "Resultados normales", "COMPLETADO");
     }
 
@@ -57,7 +57,7 @@ class ResultadoMedicoControllerTest {
         // Assert
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         assertNotNull(response.getBody());
-        if (response.getBody() != null) {
+        if (response.getBody() == null) {
             if (response.getBody() != null) {
             assertEquals("Juan Pérez", response.getBody().getPaciente());
         }

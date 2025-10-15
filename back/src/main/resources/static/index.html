@@ -17,6 +17,7 @@
     <nav class="sidebar-nav">
       <button class="nav-item active" onclick="mostrarSeccion('panel')">🏠 Panel</button>
       <button class="nav-item" onclick="mostrarSeccion('formulario')">🩺 Nueva Cita</button>
+      <button class="nav-item" onclick="mostrarSeccion('resultados')">✌️ Resultados</button>
     </nav>
   </aside>
 
@@ -41,6 +42,59 @@
         <h2>🩺 Citas Agendadas</h2>
         <div id="citasContainer" class="citas-grid"></div>
       </section>
+
+
+      <!-- SECCIÓN RESULTADOS MÉDICOS -->
+      <section id="resultados" class="form-section hidden">
+        <h2>✌️ Resultados Médicos</h2>
+
+        <div class="resultados-grid" id="resultadosContainer"></div>
+
+        <h3 style="margin-top:30px;">Nuevo / Editar Resultado</h3>
+        <form id="resultadosForm">
+          <input type="hidden" id="resultadoId">
+
+          <label>Paciente
+            <input id="resultadoPaciente" type="text" placeholder="Nombre del paciente" required>
+          </label>
+
+          <label>Tipo de Examen
+            <input id="resultadoTipoExamen" type="text" placeholder="Ej: Hemograma" required>
+          </label>
+
+          <label>Resultados
+            <textarea id="resultadoTexto" rows="3" placeholder="Resultados detallados"></textarea>
+          </label>
+
+          <label>Médico Responsable
+            <input id="resultadoMedico" type="text" placeholder="Nombre del médico" required>
+          </label>
+
+          <label>Fecha del Examen
+            <input id="resultadoFechaExamen" type="datetime-local" required>
+          </label>
+
+          <label>Observaciones
+            <textarea id="resultadoObservaciones" rows="2" placeholder="Comentarios adicionales"></textarea>
+          </label>
+
+          <label>Estado
+            <select id="resultadoEstado">
+              <option value="PENDIENTE">PENDIENTE</option>
+              <option value="ENTREGADO">ENTREGADO</option>
+              <option value="REVISADO">REVISADO</option>
+            </select>
+          </label>
+
+          <div class="actions">
+            <button type="submit" class="btn-primary">Guardar</button>
+            <button type="button" class="btn-secondary" onclick="limpiarFormularioResultado()">Cancelar</button>
+          </div>
+        </form>
+      </section>
+
+
+
 
       <!-- FORMULARIO DE CITAS -->
       <section id="formulario" class="form-section hidden">
